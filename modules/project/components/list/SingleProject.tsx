@@ -3,12 +3,16 @@ import { Check, Edit, Trash } from "lucide-react";
 import React, { useState } from "react";
 import useProjectToggleCheck from "../../hooks/useProjectToggleCheck";
 import useProjectDelete from "../../hooks/useProjectDelete";
+import { useRouter } from "next/navigation";
+import { formatDistanceToNow } from "date-fns";
 
 type Props = {
   project: ProjectType;
 };
 
 const SingleProject = ({ project }: Props) => {
+  const router = useRouter();
+
   let [isShow, setIsShow] = useState<boolean>(false);
 
   const showDetailHandler = () => {
@@ -25,15 +29,22 @@ const SingleProject = ({ project }: Props) => {
     await useProjectDelete(project.id);
   };
 
+  const editBtnHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    router.push("/edit/" + project.id);
+  };
+
   return (
     <div
       className={`border border-slate-600 border-l-4 ${project.is_done ? "border-l-green-600" : "border-l-red-600"} p-2 rounded-md mb-3 last:mb-0`}
       onClick={showDetailHandler}
     >
       <div className="flex justify-between items-center">
-        <div className="text-lg font-medium">
+        <div className="text-lg font-medium line-clamp-1">
           {project.title}{" "}
-          <small className="text-slate-500 text-xs">1hr ago</small>
+          <small className="text-slate-500 text-xs">
+            {formatDistanceToNow(project.created_at)}
+          </small>
         </div>
         <div className="gap-2 flex">
           <button
@@ -43,7 +54,7 @@ const SingleProject = ({ project }: Props) => {
             <Check size={15} />
           </button>
           <button
-            onClick={(e) => e.stopPropagation()}
+            onClick={editBtnHandler}
             className="p-1 border border-slate-600 active:scale-90 duration-200 cursor-pointer active:bg-slate-800 active:text-white"
           >
             <Edit size={15} />

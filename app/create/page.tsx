@@ -1,6 +1,6 @@
-import ProjectListSection from "@/modules/project/components/list/ProjectListSection";
+import ProjectCreateSection from "@/modules/project/components/create/ProjectCreateSection";
 import Link from "next/link";
-import { Toaster } from "react-hot-toast";
+import React from "react";
 
 const Page = () => {
   return (
@@ -14,9 +14,7 @@ const Page = () => {
         | <Link href={"/create"}>Create</Link>
       </div>
 
-      <ProjectListSection />
-
-      <Toaster />
+      <ProjectCreateSection />
     </div>
   );
 };

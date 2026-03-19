@@ -1,4 +1,5 @@
 import { projectApi, storeProject } from "@/services/ProjectService";
+import useMenuStore from "@/store/useMenuStore";
 import { ProjectStoreSchema, ProjectStoreValue } from "@/types/ProjectType";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -8,7 +9,7 @@ import { mutate } from "swr";
 
 const useProjectCreate = () => {
   const router = useRouter();
-
+  const { makeActive } = useMenuStore();
   const form = useForm<ProjectStoreValue>({
     resolver: zodResolver(ProjectStoreSchema),
     defaultValues: {
@@ -23,6 +24,7 @@ const useProjectCreate = () => {
       mutate(projectApi);
       toast.success("new project successfully created.");
       form.reset();
+      makeActive("/");
       router.push("/");
     } catch (error: unknown) {
       form.reset();

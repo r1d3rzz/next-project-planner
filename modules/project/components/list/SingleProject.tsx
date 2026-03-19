@@ -1,3 +1,5 @@
+"use client";
+
 import { ProjectType } from "@/types/ProjectType";
 import { Check, Edit, Trash } from "lucide-react";
 import React, { useState } from "react";
@@ -5,13 +7,18 @@ import useProjectToggleCheck from "../../hooks/useProjectToggleCheck";
 import useProjectDelete from "../../hooks/useProjectDelete";
 import { useRouter } from "next/navigation";
 import { formatDistanceToNow } from "date-fns";
+import useMenuStore from "@/store/useMenuStore";
+import useProjectStatusStore from "@/store/useProjectStatusStore";
 
 type Props = {
   project: ProjectType;
+  filgerBtnHandler: (status: string) => void;
 };
 
-const SingleProject = ({ project }: Props) => {
+const SingleProject = ({ project, filgerBtnHandler }: Props) => {
   const router = useRouter();
+  const { makeAllUnActive } = useMenuStore();
+  const { makeActive } = useProjectStatusStore();
 
   let [isShow, setIsShow] = useState<boolean>(false);
 
@@ -22,6 +29,7 @@ const SingleProject = ({ project }: Props) => {
   const checkBtnHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     await useProjectToggleCheck(project.id);
+    filgerBtnHandler("all");
   };
 
   const deleteBtnHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,6 +39,7 @@ const SingleProject = ({ project }: Props) => {
 
   const editBtnHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    makeAllUnActive();
     router.push("/edit/" + project.id);
   };
 

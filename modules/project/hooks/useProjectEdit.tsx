@@ -3,6 +3,7 @@ import {
   storeProject,
   updateProject,
 } from "@/services/ProjectService";
+import useMenuStore from "@/store/useMenuStore";
 import {
   ProjectStoreSchema,
   ProjectStoreValue,
@@ -16,7 +17,7 @@ import { mutate } from "swr";
 
 const useProjectEdit = (data: ProjectType) => {
   const router = useRouter();
-
+  const { makeActive } = useMenuStore();
   const form = useForm<ProjectStoreValue>({
     resolver: zodResolver(ProjectStoreSchema),
     defaultValues: {
@@ -30,6 +31,7 @@ const useProjectEdit = (data: ProjectType) => {
       mutate(projectApi);
       toast.success("new project successfully Editd.");
       form.reset();
+      makeActive("/");
       router.push("/");
     } catch (error: unknown) {
       form.reset();

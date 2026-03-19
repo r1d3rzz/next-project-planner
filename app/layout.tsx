@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import NavMenu from "@/components/NavMenu";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,6 +28,8 @@ export default function RootLayout({
       <body
         className={`w-1/3 mx-auto my-3 ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <h1 className="text-center text-xl my-3">Project Planner</h1>
+        <NavMenu />
         {children}
       </body>
     </html>

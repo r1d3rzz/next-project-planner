@@ -9,6 +9,7 @@ type Menu = {
 type MenuState = {
   menu: Menu[];
   makeActive: (name: string) => void;
+  makeAllUnActive: () => void;
 };
 
 const useMenuStore = create<MenuState>()((set) => ({
@@ -16,13 +17,20 @@ const useMenuStore = create<MenuState>()((set) => ({
     { name: "Home", href: "/", is_active: true },
     { name: "Create", href: "/create", is_active: false },
   ],
-  makeActive: (name: string) =>
+  makeActive: (href: string) =>
     set((state) => ({
       menu: state.menu.map((el) =>
-        el.name == name
+        el.href == href
           ? { ...el, is_active: true }
           : { ...el, is_active: false },
       ),
+    })),
+  makeAllUnActive: () =>
+    set((state) => ({
+      menu: state.menu.map((el) => ({
+        ...el,
+        is_active: false,
+      })),
     })),
 }));
 
